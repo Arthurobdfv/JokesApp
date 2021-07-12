@@ -1,0 +1,28 @@
+    version: '3.4'
+
+    services:
+      db:
+        image: "microsoft/mssql-server-windows-developer"
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=MyStr@ngPassw0rd
+        networks:
+            db:
+                aliases:
+                    - db
+        ports:
+        - "5454:1433"
+
+      jokeswebapi:
+        image: ${DOCKER_REGISTRY-}jokeswebapi
+        build:
+          context: .
+          dockerfile: JokesWebApi\Dockerfile
+        depends_on:
+            - db
+        networks:
+        - db
+   
+    networks:
+        db:
+  
